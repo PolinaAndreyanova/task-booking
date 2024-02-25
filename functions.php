@@ -1,9 +1,9 @@
 <?php
-function DatePeriodConverter($arDatePeriod) {
+function DatePeriodConverter(array $arDatePeriod) : array {
     return [strtotime($arDatePeriod[0]), strtotime($arDatePeriod[1])];
 }
 
-function PostDataHandler() {
+function PostDataHandler() : array {
     $dateStart = $_POST["dateStart"];
     $dateEnd = $_POST["dateEnd"];
 
@@ -14,7 +14,7 @@ function PostDataHandler() {
     return [$dateStart, $dateEnd];
 }
 
-function PostDataHandlerBack($arPostData) {
+function PostDataHandlerBack(array $arPostData) : array {
     if ($arPostData[0] === $arPostData[1]) {
         unset($arPostData[1]);
     }
@@ -22,7 +22,7 @@ function PostDataHandlerBack($arPostData) {
     return $arPostData;
 }
 
-function ReadDate($fDates) {
+function ReadDate(mixed $fDates) : array {
     $arDates = [];
 
     $arData = fgetcsv($fDates, 100);
@@ -38,17 +38,18 @@ function ReadDate($fDates) {
     return $arDates;
 }
 
-function WriteDate($fDates) {
+function WriteDate(mixed $fDates) : void {
     $arDates = PostDataHandlerBack(PostDataHandler());
 
     fputcsv($fDates, $arDates);
+
+    return;
 }
 
-function IsAddDates($new, $dates) { // 
+function IsAddDates(array $new, array $dates) : bool { // 
     $isAdd = true;
 
     [$newDateStart, $newDateEnd] = DatePeriodConverter($new);
-
     [$bookedStart, $bookedEnd] = DatePeriodConverter($dates);
 
     if (($newDateStart <= $bookedEnd) && ($newDateEnd >= $bookedStart)) {

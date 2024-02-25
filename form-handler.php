@@ -1,17 +1,17 @@
 <?php
 include_once("functions.php");
 
-define("CSV_FILE", "dates.csv");
+define("DATABASE", "dates.csv");
 
 $arNewDates = PostDataHandler();
 
 $res = true;
 
-$streamDb = fopen(CSV_FILE, "rt") or Die("Ошибка!");
+$streamDb = fopen(DATABASE, "rt") or Die("Ошибка!");
 
 for ($i = 0; $value = ReadDate($streamDb); $i++) {
     $isAdd = IsAddDates($arNewDates, $value);
-    
+
     if (!$isAdd) {
         $res = false;
 
@@ -22,15 +22,15 @@ for ($i = 0; $value = ReadDate($streamDb); $i++) {
 fclose($streamDb);
 
 if ($res) {
-    $streamDb = fopen(CSV_FILE, "a") or Die("Ошибка!");
+    $streamDb = fopen(DATABASE, "a") or Die("Ошибка!");
 
     WriteDate($streamDb);
 
     fclose($streamDb);  
 
-    $feedbsck = "Данную дату или период можно добавить в массив для нового бронирования";
+    $feedback = "Данную дату или период можно добавить в массив для нового бронирования";
 } else {
-    $feedbsck = "Данную дату или период нельзя добавить в массив для нового бронирования";
+    $feedback = "Данную дату или период нельзя добавить в массив для нового бронирования";
 }
 ?>
 <!DOCTYPE html>
@@ -45,7 +45,7 @@ if ($res) {
     </style>
 </head>
 <body>
-    <p><?=$feedbsck?></p>
+    <p><?=$feedback?></p>
     <form action="index.php" method="post">
         <input type="submit" value="На главную!" />
     </form>
