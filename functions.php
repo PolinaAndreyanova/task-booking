@@ -14,50 +14,46 @@ function PostDataHandler() {
     return [$dateStart, $dateEnd];
 }
 
-function readCSV($file) {
-    $arDates = [];
-
-    $fDates = fopen($file, "rt") or Die("Ошибка!");
-
-    for ($i = 0; $arData = fgetcsv($fDates, 100); $i++) {
-        if (count($arData) == 1) {
-            $arDates[] = [$arData[0], $arData[0]];
-        } else {
-            $arDates[] = $arData;
-        }
+function PostDataHandlerBack($arPostData) {
+    if ($arPostData[0] === $arPostData[1]) {
+        unset($arPostData[1]);
     }
 
-    fclose($fDates);
+    return $arPostData;
+}
+
+function ReadDate($fDates) {
+    $arDates = [];
+
+    $arData = fgetcsv($fDates, 100);
+
+    if ($arData){
+        if (count($arData) == 1) {
+            $arDates = [$arData[0], $arData[0]];
+        } else {
+            $arDates = $arData;
+        }
+    }
 
     return $arDates;
 }
 
-function writeCSV($file) {
-    $arDates = PostDataHandler();
-
-    if ($arDates[0] === $arDates[1]) {
-        unset($arDates[1]);
-    }
-
-    $fDates = fopen($file, "a") or Die("Ошибка!");
+function WriteDate($fDates) {
+    $arDates = PostDataHandlerBack(PostDataHandler());
 
     fputcsv($fDates, $arDates);
-
-    fclose($fDates);
 }
 
-function AddDates($new, $dates) {
+function IsAddDates($new, $dates) { // 
     $isAdd = true;
 
     [$newDateStart, $newDateEnd] = DatePeriodConverter($new);
 
-    foreach ($dates as $value) {
-        [$bookedStart, $bookedEnd] = DatePeriodConverter($value);
+    [$bookedStart, $bookedEnd] = DatePeriodConverter($dates);
 
-        if (($newDateStart <= $bookedEnd) && ($newDateEnd >= $bookedStart)) {
-            $isAdd = false;
-            break;
-        }
+    if (($newDateStart <= $bookedEnd) && ($newDateEnd >= $bookedStart)) {
+        $isAdd = false;
     }
+
     return $isAdd;
 }
