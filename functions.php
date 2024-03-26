@@ -1,9 +1,11 @@
 <?php
-function DatePeriodConverter(array $arDatePeriod) : array {
+function DatePeriodConverter(array $arDatePeriod): array 
+{
     return [strtotime($arDatePeriod[0]), strtotime($arDatePeriod[1])];
 }
 
-function PostDataHandler() : array {
+function PostDataHandler(): array 
+{
     $dateStart = $_POST["dateStart"];
     $dateEnd = $_POST["dateEnd"];
 
@@ -14,7 +16,8 @@ function PostDataHandler() : array {
     return [$dateStart, $dateEnd];
 }
 
-function PostDataHandlerBack(array $arPostData) : array {
+function PostDataHandlerBack(array $arPostData): array 
+{
     if ($arPostData[0] === $arPostData[1]) {
         unset($arPostData[1]);
     }
@@ -22,7 +25,8 @@ function PostDataHandlerBack(array $arPostData) : array {
     return $arPostData;
 }
 
-function ReadDate(mixed $fDates) : array {
+function ReadDate(mixed $fDates): array 
+{
     $arDates = [];
 
     $arData = fgetcsv($fDates, 100);
@@ -38,7 +42,8 @@ function ReadDate(mixed $fDates) : array {
     return $arDates;
 }
 
-function WriteDate(mixed $fDates) : void {
+function WriteDate(mixed $fDates): void 
+{
     $arDates = PostDataHandlerBack(PostDataHandler());
 
     fputcsv($fDates, $arDates);
@@ -46,7 +51,8 @@ function WriteDate(mixed $fDates) : void {
     return;
 }
 
-function IsAddDates(array $new, array $dates) : bool { // 
+function IsAddDates(array $new, array $dates): bool 
+{ 
     $isAdd = true;
 
     [$newDateStart, $newDateEnd] = DatePeriodConverter($new);
