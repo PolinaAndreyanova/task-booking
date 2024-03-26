@@ -1,6 +1,7 @@
 <?php
 function DatePeriodConverter(array $arDatePeriod): array 
 {
+    // print_r([strtotime($arDatePeriod[0]), strtotime($arDatePeriod[1])]);
     return [strtotime($arDatePeriod[0]), strtotime($arDatePeriod[1])];
 }
 
@@ -42,13 +43,13 @@ function ReadDate(mixed $fDates): array
     return $arDates;
 }
 
-function WriteDate(mixed $fDates): void 
+function WriteDate(mixed $fDates): array 
 {
     $arDates = PostDataHandlerBack(PostDataHandler());
 
     fputcsv($fDates, $arDates);
 
-    return;
+    return $arDates;
 }
 
 function IsAddDates(array $new, array $dates): bool 
